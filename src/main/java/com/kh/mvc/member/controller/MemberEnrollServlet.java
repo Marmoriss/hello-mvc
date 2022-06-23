@@ -1,6 +1,7 @@
 package com.kh.mvc.member.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ public class MemberEnrollServlet extends HttpServlet {
 	private MemberService memberService = new MemberService();
 
 	/**
-	 * 회원가입폼 요청
+	 * GET 회원가입폼 요청
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/views/member/memberEnroll.jsp")
@@ -31,7 +32,9 @@ public class MemberEnrollServlet extends HttpServlet {
 	}
 
 	/**
-	 * db insert요청
+	 * POST db insert 요청
+	 * 
+	 * insert into member values (?, ?, ?, default, ?, ?, ?, ?, ?, default, default)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -48,31 +51,34 @@ public class MemberEnrollServlet extends HttpServlet {
 			String phone = request.getParameter("phone");
 			String[] hobbies = request.getParameterValues("hobby");
 			
-			
 			Gender gender = _gender != null ? Gender.valueOf(_gender) : null;
-			String hobby = hobbies != null ? String.join(",", hobbies) : null;
+			String hobby = hobbies != null ? String.join(",", hobbies) : null; 
 			Date birthday = (_birthday != null && !"".equals(_birthday)) ? 
-					Date.valueOf(_birthday) : null;
-			
+								Date.valueOf(_birthday) :
+									null;
 			
 			Member member = 
 					new Member(memberId, password, memberName, null, gender, 
 							birthday, email, phone, hobby, 0, null);
 			System.out.println("member@MemberEnrollServlet = " + member);
-	
+			
 			// 3. 업무로직 : db insert
-			int result = memberService.insertMember(member);
+			int result = memberService.insertMember(member); 
 			System.out.println("result@MemberEnrollServlet = " + result);
 			
-			
 			// 4. 응답처리 : redirect
-			HttpSession session =  request.getSession();
+			HttpSession session = request.getSession();
 			session.setAttribute("msg", "회원가입이 정상적으로 처리되었습니다.");
 			response.sendRedirect(request.getContextPath() + "/");
+		
 		} catch (Exception e) {
-			e.printStackTrace(); //로깅
-			throw e; // WAS(tomcat)예외 던짐 -> 에러 페이지를 응답출력
+			e.printStackTrace(); // 로깅
+			throw e; // WAS(tomcat) 예외 던짐 -> 에러페이지를 응답출력
 		}
+		
 	}
 
 }
+
+
+
