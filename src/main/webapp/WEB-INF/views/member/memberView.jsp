@@ -5,7 +5,6 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
     String memberId = loginMember.getMemberId();
-    String password = loginMember.getPassword();
     String memberName = loginMember.getMemberName();
     String birthday = loginMember.getBirthday() != null ? 
             loginMember.getBirthday().toString() : ""; // null값이어도 input:datetime에서 무시함.
@@ -25,7 +24,7 @@
 %>
 <section id=enroll-container>
 	<h2>회원 정보</h2>
-	<form name="memberUpdateFrm" method="POST">
+	<form name="memberUpdateFrm" action="<%=request.getContextPath() %>/member/memberUpdate" method="POST">
 		<table>
 			<tr>
 				<th>아이디<sup>*</sup></th>
@@ -33,18 +32,6 @@
 					<input type="text" name="memberId" id="memberId" value="<%= loginMember.getMemberId() %>" readonly>
 				</td>
 			</tr>
-			<tr>
-				<th>패스워드<sup>*</sup></th>
-				<td>
-					<input type="password" name="password" id="password" value="<%= loginMember.getPassword() %>" required>
-				</td>
-			</tr>
-			<tr>
-				<th>패스워드확인<sup>*</sup></th>
-				<td>	
-					<input type="password" id="passwordCheck" value="" required><br>
-				</td>
-			</tr> 
 			<tr>
 				<th>이름<sup>*</sup></th>
 				<td>	
@@ -96,11 +83,18 @@
 			</tr>
 		</table>
         <input type="submit" value="정보수정"/>
-        <input type="button" onclick="deleteMember();" value="탈퇴"/>
+        <input type="button" value="비밀번호 변경" onclick="updatePassword();"/>
+        <input type="button"  value="탈퇴" onclick="deleteMember();"/>
 	</form>
 </section>
-<form action="" name="memberDelFrm"></form>
+<form action="<%=request.getContextPath() %>/member/memberDelete" name="memberDelFrm" method="POST"></form>
+    <input type="hidden" name="memberId" id="memberId" value="<%= loginMember.getMemberId() %>" />
 <script>
+
+const updatePassword = () => {
+  
+    location.href ="<%= request.getContextPath() %>/member/passwordUpdate";
+};
 /**
  * POST /member/memberDelete
  * POST는 폼안에서 제출하는 방법으로만 제출할 수 있다. 
@@ -115,29 +109,16 @@
  */
 const deleteMember = () => {
    //memberDelFrm 제출
+   const bool = confirm("정말 탈퇴하시겠습니까?")
+   if(bool){
+       document.memberDelFrm.submit();
+   };
+   
+   
 };
 
-//패스워드-패스워드 확인 일치 여부 확인
-document.querySelector("#passwordCheck").onblur = (e) => {
-    const password = document.querySelector("#password");
-    const passwordCheck = e.target;
-    if(password.value !== passwordCheck.value){
-        alert("비밀번호가 일치하지 않습니다.");
-        password.select();
-    }
-    
-}
-
 document.memberUpdateFrm.onsubmit = (e) => {
-    //패스워드 유효성 확인
-    const password = document.querySelector("#password");
-    if(!/^[a-zA-z0-9]{4,}$/.test(password.value)){
-        alert("비밀번호는 영문자/숫자로 최소 4글자 이상이어야 합니다.");
-        password.select();
-        return false;
-    }
     // 이름 유효성 확인
-    
     const memberName = document.querySelector("#memberName");
     if(!/^[가-힣]{2,}$/.test(memberName.value)){
         alert("이름은 최소 한글 2글자 이상이어야 합니다.");

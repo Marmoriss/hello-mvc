@@ -25,7 +25,7 @@ public class SessionCounterListener implements HttpSessionListener {
      */
     public void sessionCreated(HttpSessionEvent se)  { 
     	activeSessions++;
-    	System.out.println("[sessionCreated] 현재 세선 수 : " + activeSessions);
+//    	System.out.println("[sessionCreated] 현재 세선 수 : " + activeSessions);
     }
 
 	/**
@@ -35,7 +35,7 @@ public class SessionCounterListener implements HttpSessionListener {
     	if(activeSessions > 0) 
     		activeSessions--;
     	
-    	System.out.println("[sessionDestroyed] 현재 세선 수 : " + activeSessions);
+//    	System.out.println("[sessionDestroyed] 현재 세선 수 : " + activeSessions);
     }
 	
 }

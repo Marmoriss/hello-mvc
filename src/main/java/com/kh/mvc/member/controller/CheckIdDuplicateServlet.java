@@ -25,16 +25,14 @@ public class CheckIdDuplicateServlet extends HttpServlet {
 	 * - null -> 해당 id 사용 가능
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 인코딩 처리
-		request.setCharacterEncoding("UTF-8");
 		// 2. 사용자 입력값 처리
 		String memberId = request.getParameter("memberId");
-		System.out.println("memberId = " + memberId);
+//		System.out.println("memberId = " + memberId);
 		
 		// 3. 업무 로직
 		Member member = memberService.findById(memberId);
 		boolean available = member == null;
-		System.out.println("available = " + available);
+//		System.out.println("available = " + available);
 		
 		// 4. 응답 처리
 		request.setAttribute("available", available);

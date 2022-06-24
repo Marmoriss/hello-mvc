@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kh.mvc.common.HelloMvcUtils;
 import com.kh.mvc.member.model.dto.Gender;
 import com.kh.mvc.member.model.dto.Member;
 import com.kh.mvc.member.model.service.MemberService;
@@ -39,11 +40,11 @@ public class MemberEnrollServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// 1. 인코딩처리
-			request.setCharacterEncoding("utf-8");
+//			request.setCharacterEncoding("utf-8");
 			
 			// 2. 사용자입력값처리
 			String memberId = request.getParameter("memberId");
-			String password = request.getParameter("password");
+			String password = HelloMvcUtils.getEncryptedPassword(request.getParameter("password"), memberId);
 			String memberName = request.getParameter("memberName");
 			String _gender = request.getParameter("gender");
 			String _birthday = request.getParameter("birthday");
@@ -64,7 +65,7 @@ public class MemberEnrollServlet extends HttpServlet {
 			
 			// 3. 업무로직 : db insert
 			int result = memberService.insertMember(member); 
-			System.out.println("result@MemberEnrollServlet = " + result);
+//			System.out.println("result@MemberEnrollServlet = " + result);
 			
 			// 4. 응답처리 : redirect
 			HttpSession session = request.getSession();

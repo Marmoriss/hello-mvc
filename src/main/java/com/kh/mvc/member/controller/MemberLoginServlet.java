@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kh.mvc.common.HelloMvcUtils;
 import com.kh.mvc.member.model.dto.Member;
 import com.kh.mvc.member.model.service.MemberService;
 
@@ -27,12 +28,9 @@ public class MemberLoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
-			// 1. 인코딩 처리
-			request.setCharacterEncoding("utf-8");
-			
 			// 2. 사용자 입력값 처리
 			String memberId = request.getParameter("memberId");
-			String password = request.getParameter("password");
+			String password = HelloMvcUtils.getEncryptedPassword(request.getParameter("password"), memberId); 
 			String saveId = request.getParameter("saveId");
 			
 			System.out.println("memberId = " + memberId);
@@ -41,10 +39,10 @@ public class MemberLoginServlet extends HttpServlet {
 			
 			// 3. 업무 로직 처리 : 로그인 여부 판단
 			Member member = memberService.findById(memberId);
-			System.out.println("member@MemberLoginServlet = " + member);
+//			System.out.println("member@MemberLoginServlet = " + member);
 			
 			HttpSession session = request.getSession(true); // 세션이 존재하지 않으면, 새로 생성해서 반환. true 생략 가능
-			System.out.println("session Id = " + session.getId()); // 클라이언트쪽과 동일
+//			System.out.println("session Id = " + session.getId()); // 클라이언트쪽과 동일
 			
 			// 로그인 성공
 			if(member != null && password.equals(member.getPassword())) {
