@@ -87,8 +87,9 @@
         <input type="button"  value="탈퇴" onclick="deleteMember();"/>
 	</form>
 </section>
+<!-- 회원탈퇴폼 : POST /member/memberDelete 전송을 위해 시각화되지 않는 폼태그 이용 -->
 <form action="<%=request.getContextPath() %>/member/memberDelete" name="memberDelFrm" method="POST"></form>
-    <input type="hidden" name="memberId" id="memberId" value="<%= loginMember.getMemberId() %>" />
+    <input type="hidden" name="memberId" value="<%= loginMember.getMemberId() %>" />
 <script>
 
 const updatePassword = () => {
@@ -113,8 +114,6 @@ const deleteMember = () => {
    if(bool){
        document.memberDelFrm.submit();
    };
-   
-   
 };
 
 document.memberUpdateFrm.onsubmit = (e) => {

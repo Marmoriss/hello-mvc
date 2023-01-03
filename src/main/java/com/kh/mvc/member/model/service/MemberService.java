@@ -4,9 +4,11 @@ import static com.kh.mvc.common.JdbcTemplate.*;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.mvc.member.model.dao.MemberDao;
 import com.kh.mvc.member.model.dto.Member;
+import com.kh.mvc.member.model.exception.MemberException;
 
 public class MemberService {
 
@@ -88,9 +90,9 @@ public class MemberService {
 		return result;
 	}
 
-	public List<Member> findAll() {
+	public List<Member> findAll(Map<String, Object> param) {
 		Connection conn = getConnection();
-		List<Member> list = memberDao.findAll(conn);
+		List<Member> list = memberDao.findAll(conn, param);
 		close(conn);
 		return list;
 	}
@@ -101,11 +103,58 @@ public class MemberService {
 		
 		try {
 			result = memberDao.deleteMember(conn, memberId);
+			if(result == 0)
+				throw new MemberException("해당 회원은 존재하지 않습니다.");
 			commit(conn);
 		} catch (Exception e) {
 			rollback(conn);
 			throw e;
 		} finally {
+			close(conn);
+		}
+		
+		return result;
+	}
+
+	public int getTotalContent() {
+		Connection conn = getConnection();
+		int totalContent = 0;
+		
+		totalContent = memberDao.getTotalContent(conn);
+		close(conn);
+		
+		return totalContent;
+	}
+
+	public List<Member> findMemberLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Member> list = memberDao.findMemberLike(conn, param);
+		close(conn);
+		return list;
+	}
+
+	public int getTotalContentLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalContent = 0;
+		
+		totalContent = memberDao.getTotalContentLike(conn, param);
+		close(conn);
+		
+		return totalContent;
+	}
+
+	public int updateMemberRole(Member member) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = memberDao.updateMemberRole(conn, member);
+			commit(conn);
+		}
+		catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
 			close(conn);
 		}
 		

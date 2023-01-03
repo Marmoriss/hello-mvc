@@ -28,14 +28,14 @@ public class LogFilter implements Filter {
      * Default constructor. 
      */
     public LogFilter() {
-//        System.out.println("[LogFilter 생성]");
+        System.out.println("[LogFilter 생성]");
     }
 
 	/**
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-//		System.out.println("[LogFilter destroy]");
+		System.out.println("[LogFilter destroy]");
 	}
 
 	/**
@@ -52,18 +52,18 @@ public class LogFilter implements Filter {
 		String uri = httpReq.getRequestURI(); // /mvc/member/enroll
 		String method = httpReq.getMethod();
 		
-//		System.out.println("============================================");
-//		System.out.printf("%s %s%n", method, uri);
-//		System.out.println("--------------------------------------------");
+		System.out.println("============================================");
+		System.out.printf("%s %s%n", method, uri);
+		System.out.println("--------------------------------------------");
 		
 		// filter chain의 다음 filter를 호출(마지막 필터라면 servlet 호출)
 		chain.doFilter(request, response);
 		
 		//후처리
 		HttpServletResponse httpRes = (HttpServletResponse) response;
-//		System.out.println("____________________________________________");
-//		System.out.println(httpRes.getStatus());
-//		System.out.println();
+		System.out.println("____________________________________________");
+		System.out.println(httpRes.getStatus());
+		System.out.println();
 		
 	}
 
@@ -71,7 +71,7 @@ public class LogFilter implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-//		System.out.println("[LogFilter init]");
+		System.out.println("[LogFilter init]");
 	}
 
 }

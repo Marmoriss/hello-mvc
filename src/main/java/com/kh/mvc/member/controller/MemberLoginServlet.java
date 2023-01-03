@@ -77,7 +77,8 @@ public class MemberLoginServlet extends HttpServlet {
 			// 4. 응답 메세지 처리 : 로그인 후 url변경을 위해 리다이렉트 처리 -> 무조건 GET방식
 			// 응답 302 redirect 전송. 
 			// 브라우져에 location으로 재요청을 명령.
-			response.sendRedirect(request.getContextPath() + "/"); // /mvc/
+			String location = request.getHeader("Referer"); // refere는 원래 머물고 있던 페이지
+			response.sendRedirect(location); // /mvc/
 		} catch (IOException e) {
 			e.printStackTrace(); //로깅
 			throw e; // tomcat에게 예외 던짐.

@@ -26,7 +26,13 @@ import com.kh.mvc.member.model.dto.Member;
 	"/member/memberView", 
 	"/memebr/memberUpdate", 
 	"/member/memberDelete",
-	"/member/passwordUpdate"})
+	"/member/passwordUpdate",
+	"/board/boardEnroll",
+	"/board/boardUpdate",
+	"/board/boardDelete",
+	"/board/boardCommentEnroll",
+	"/chat/*"
+	})
 public class LoginFilter implements Filter {
 
     /**

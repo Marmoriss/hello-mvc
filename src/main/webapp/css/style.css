@@ -72,8 +72,23 @@ ul.main-nav li span.animate_line{
 ul.main-nav li:hover span.animate_line{
 	width:100%;
 }
+/** 벨 **/
+.bell {
+  transform-origin: top;
+  animation: bell 2s infinite linear;
+}
 
-
+@keyframes bell{
+  0%, 50%{
+    transform: rotate(0deg);
+    }
+  5%, 15%, 25%, 35%, 45% {
+    transform: rotate(13deg);
+  }
+  10%, 20%, 30%, 40% {
+    transform: rotate(-13deg);
+  }
+}
 /********** content **********/
 section#content		{background-color:#F5F5F5; float:left; width:940px; min-height:500px; }
 
